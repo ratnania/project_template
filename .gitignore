@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+*build*
+*egg*
+*dist*
+
+doc/_build
+tests/*.pyccel
+tests/*.f90
+tests/examples/*.pyccel
+tests/examples/*.f90
+tests/examples/openmp/*.pyccel
+tests/examples/openmp/*.f90
+

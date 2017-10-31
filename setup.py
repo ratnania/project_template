@@ -2,7 +2,9 @@
 #! /usr/bin/python
 
 import sys
-from setuptools import setup, find_packages
+from setuptools import find_packages
+from numpy.distutils.core import setup
+from numpy.distutils.core import Extension
 import project_template
 
 NAME    = 'project_template'
@@ -44,10 +46,10 @@ include_dirs = []
 library_dirs = []
 libraries    = []
 
-# ... fortran extension
-fortran_ext = Extension('project_template.core.interface',                 \
-                        sources = ['project_template/core/interface.pyf',  \
-                                   'project_template/core/interface.F90'], \
+# fortran extension
+fortran_ext = Extension('project_template.core.m_interface',                 \
+                        sources = ['project_template/core/m_interface.pyf',  \
+                                   'project_template/core/m_interface.f90'], \
                         f2py_options = ['--quiet'],                        \
 #                        define_macros = [                                  \
 #                                         #('F2PY_REPORT_ATEXIT', 0),
@@ -55,9 +57,7 @@ fortran_ext = Extension('project_template.core.interface',                 \
                         include_dirs=include_dirs,                         \
                         library_dirs=library_dirs,                         \
                         libraries=libraries)
-# ...
 
-# ...
 ext_modules  = [fortran_ext]
 # ...
 
@@ -65,6 +65,7 @@ def setup_package():
     setup(packages=packages, \
           include_package_data=True, \
           install_requires=install_requires, \
+          ext_modules=ext_modules, \
 # TODO uncomment to have a command 'project_template ...'
 #          entry_points={'console_scripts': ['project_template = project_template.commands.console:project_template']}, \
           **setup_args)

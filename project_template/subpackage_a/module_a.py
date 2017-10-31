@@ -1,6 +1,6 @@
 # coding: utf-8
 
 # ...
-class class_a(self):
+class class_a(object):
     pass
 # ...
