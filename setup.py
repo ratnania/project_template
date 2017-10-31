@@ -39,11 +39,34 @@ except:
     install_requires += ['sympy']
 # ...
 
+# ... TODO to set if the project needs external libraries
+include_dirs = []
+library_dirs = []
+libraries    = []
+
+# ... fortran extension
+fortran_ext = Extension('project_template.core.interface',                 \
+                        sources = ['project_template/core/interface.pyf',  \
+                                   'project_template/core/interface.F90'], \
+                        f2py_options = ['--quiet'],                        \
+#                        define_macros = [                                  \
+#                                         #('F2PY_REPORT_ATEXIT', 0),
+#                                         ('F2PY_REPORT_ON_ARRAY_COPY', 0)], \
+                        include_dirs=include_dirs,                         \
+                        library_dirs=library_dirs,                         \
+                        libraries=libraries)
+# ...
+
+# ...
+ext_modules  = [fortran_ext]
+# ...
+
 def setup_package():
     setup(packages=packages, \
           include_package_data=True, \
           install_requires=install_requires, \
-          entry_points={'console_scripts': ['project_template = project_template.commands.console:project_template']}, \
+# TODO uncomment to have a command 'project_template ...'
+#          entry_points={'console_scripts': ['project_template = project_template.commands.console:project_template']}, \
           **setup_args)
 
 if __name__ == "__main__":

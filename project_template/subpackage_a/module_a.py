@@ -1,4 +1,6 @@
 # coding: utf-8
 
 # ...
+class class_a(self):
+    pass
 # ...
