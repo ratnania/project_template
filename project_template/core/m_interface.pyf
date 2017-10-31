@@ -9,75 +9,23 @@ python module m_interface ! in
                 integer(kind=4) intent(out) :: n
             end subroutine get_n_max_core_array
 
-!            ! .......................................................
-!            !                      PLAF/vector
-!            ! .......................................................
-!            subroutine vector_create_1(i_vector, n_size, n_blocks) ! in :m_interface:interface.F90: vector_create_1
-!                integer(kind=4) intent(in) :: i_vector
-!                integer(kind=4) intent(in) :: n_size
-!                integer(kind=4) intent(in) :: n_blocks 
-!            end subroutine vector_create_1 
-!
-!            subroutine vector_create_2(i_vector, n_blocks) ! in :m_interface:interface.F90: vector_create_2
-!                integer(kind=4) intent(in) :: i_vector
-!                integer(kind=4) intent(in) :: n_blocks 
-!            end subroutine vector_create_2
-!
-!            subroutine vector_free(i_vector) ! in :m_interface:interface.F90: vector_free
-!                integer(kind=4) intent(in) :: i_vector
-!            end subroutine vector_free 
-!
-!            subroutine vector_print_info(i_vector) ! in :m_interface:interface.F90: vector_print_info
-!                integer(kind=4) intent(in) :: i_vector
-!            end subroutine vector_print_info 
-!
-!            subroutine vector_get_n_size(i_vector, n_size) ! in :m_interface:interface.F90: vector_get_n_size
-!                integer(kind=4) intent(in)  :: i_vector
-!                integer(kind=4) intent(out) :: n_size 
-!            end subroutine vector_get_n_size
-!
-!            subroutine vector_get_n_blocks(i_vector, n_blocks) ! in :m_interface:interface.F90: vector_get_n_blocks
-!                integer(kind=4) intent(in)  :: i_vector
-!                integer(kind=4) intent(out) :: n_blocks 
-!            end subroutine vector_get_n_blocks
-!
-!            subroutine vector_get(i_vector, n_size, n_blocks, x) ! in :m_interface:interface.F90: vector_get
-!                integer(kind=4) intent(in) :: i_vector
-!                integer(kind=4) intent(in) :: n_size
-!                integer(kind=4) intent(in) :: n_blocks 
-!                real(kind=8) dimension(n_blocks,n_size),intent(out),depend(n_blocks,n_size) :: x
-!            end subroutine vector_get 
-!
-!            subroutine vector_get_as_array(i_vector, n, x) ! in :m_interface:interface.F90: vector_get_as_array
-!                integer(kind=4) intent(in) :: i_vector
-!                integer(kind=4) intent(in) :: n
-!                real(kind=8) dimension(n),intent(out),depend(n) :: x
-!            end subroutine vector_get_as_array 
-!
-!            subroutine vector_set(i_vector, n_size, n_blocks, x) ! in :m_interface:interface.F90: vector_set
-!                integer(kind=4) intent(in) :: i_vector
-!                integer(kind=4) intent(in) :: n_size
-!                integer(kind=4) intent(in) :: n_blocks 
-!                real(kind=8) dimension(n_blocks,n_size),intent(in),depend(n_blocks,n_size) :: x
-!            end subroutine vector_set 
-!
-!            subroutine vector_set_as_array(i_vector, n, x) ! in :m_interface:interface.F90: vector_set_as_array
-!                integer(kind=4) intent(in) :: i_vector
-!                integer(kind=4) intent(in) :: n
-!                real(kind=8) dimension(n),intent(in),depend(n) :: x
-!            end subroutine vector_set_as_array 
-!
-!            subroutine vector_read_from_file(i_vector, filename) ! in :m_interface:interface.F90: vector_read_from_file
-!                integer(kind=4)    intent(in) :: i_vector
-!                character(len=256) intent(in) :: filename
-!            end subroutine vector_read_from_file 
-!
-!            subroutine vector_export(i_vector, filename, i_format) ! in :m_interface:interface.F90: vector_export
-!                integer(kind=4)    intent(in) :: i_vector
-!                character(len=256) intent(in) :: filename
-!                integer(kind=4)    intent(in) :: i_format
-!            end subroutine vector_export 
-!            ! .......................................................
+            ! .......................................................
+            !                      density
+            ! .......................................................
+            subroutine density_4d_create(i_density, starts, ends) ! in :m_interface:interface.F90: density_4d_create
+                integer(kind=4)               intent(in) :: i_density
+                integer(kind=4) dimension(4), intent(in) :: starts
+                integer(kind=4) dimension(4), intent(in) :: ends
+            end subroutine density_4d_create 
+
+            subroutine density_4d_free(i_density) ! in :m_interface:interface.F90: density_4d_free
+                integer(kind=4)              intent(in) :: i_density
+            end subroutine density_4d_free 
+
+            subroutine density_4d_print_info(i_density) ! in :m_interface:interface.F90: density_4d_print_info
+                integer(kind=4)              intent(in) :: i_density
+            end subroutine density_4d_print_info 
+            ! .......................................................
         end module m_interface
     end interface 
 end python module m_interface

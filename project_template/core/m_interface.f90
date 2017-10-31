@@ -3,33 +3,35 @@ module m_interface
 implicit none
 
   private
-  public :: get_n_max_core_array
-
-!  public ::                                              &
-!          & get_n_max_core_array,                        &
-!          ! ... PLAF/vector                             
-!          & vector_create_1,                             &
-!          & vector_create_2,                             &
-!          & vector_free,                                 &
-!          & vector_print_info,                           &
-!          & vector_get_n_size,                           &
-!          & vector_get_n_blocks,                         &
-!          & vector_get,                                  &
-!          & vector_get_as_array,                         &
-!          & vector_set,                                  &
-!          & vector_set_as_array,                         &
-!          & vector_read_from_file,                       &
-!          & vector_export
-!          ! ...                                         
+  public :: get_n_max_core_array, &
+          & density_4d_create,    &  
+          & density_4d_free,      & 
+          & density_4d_print_info 
 
   ! ... maximum size of arrays for local data to the module
   integer, parameter, private :: n_max_core_array =   50 
   ! ...
 
-!  ! ... data structures for vectors
-!  integer, parameter, private :: n_vectors = n_max_core_array
-!  type(plf_t_vector), dimension(n_vectors), private, target :: p_vectors
-!  ! ...
+  ! ... data structures for density
+  type, private :: t_density_4d
+    integer, dimension(1:4) :: starts
+    integer, dimension(1:4) :: ends
+    real(kind=8), dimension(:,:,:,:), allocatable :: values
+  end type t_density_4d
+
+  type, private :: t_density_5d
+    integer, dimension(1:5) :: starts
+    integer, dimension(1:5) :: ends
+    real(kind=8), dimension(:,:,:,:,:), allocatable :: values
+  end type t_density_5d
+  ! ...
+
+  ! ... data structures for density
+  integer, parameter, private :: n_density = n_max_core_array
+
+  type(t_density_4d), dimension(n_density), private, target :: p_density_4d
+  type(t_density_5d), dimension(n_density), private, target :: p_density_5d
+  ! ...
 
 contains
   ! ................................................
@@ -45,238 +47,61 @@ contains
   end subroutine get_n_max_core_array 
   ! ................................................
 
-!  ! ................................................
-!  subroutine vector_create_1(i_vector, n_size, n_blocks)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    integer, intent(in) :: n_size
-!    integer, intent(in) :: n_blocks 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... create a vector with n_size
-!    call ptr_vector % create(n_size=n_size, n_blocks=n_blocks)
-!    ! ...
-!    
-!  end subroutine vector_create_1 
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_create_2(i_vector, n_blocks)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    integer, intent(in) :: n_blocks 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... create a vector with n_blocks
-!    call ptr_vector % create(n_blocks=n_blocks)
-!    ! ...
-!    
-!  end subroutine vector_create_2 
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_free(i_vector)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... free object
-!    call ptr_vector % free()
-!    ! ...
-!    
-!  end subroutine vector_free
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_print_info(i_vector)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... print_info object
-!    call ptr_vector % print_info()
-!    ! ...
-!    
-!  end subroutine vector_print_info
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_get_n_size(i_vector, n_size)
-!  implicit none
-!    integer, intent(in)  :: i_vector
-!    integer, intent(out) :: n_size
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... 
-!    n_size = ptr_vector % n_size
-!    ! ...
-!    
-!  end subroutine vector_get_n_size
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_get_n_blocks(i_vector, n_blocks)
-!  implicit none
-!    integer, intent(in)  :: i_vector
-!    integer, intent(out) :: n_blocks 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... 
-!    n_blocks = ptr_vector % n_blocks
-!    ! ...
-!    
-!  end subroutine vector_get_n_blocks
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_get(i_vector, n_size, n_blocks, x)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    integer, intent(in) :: n_size
-!    integer, intent(in) :: n_blocks 
-!    real(kind=8), dimension (n_blocks,n_size), intent(out) :: x 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... get a vector with n_size
-!    call ptr_vector % get(x)
-!    ! ...
-!    
-!  end subroutine vector_get
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_get_as_array(i_vector, n, x)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    integer, intent(in) :: n
-!    real(kind=8), dimension(n), intent(out) :: x 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... get a vector with n_size
-!    call ptr_vector % get(x)
-!    ! ...
-!    
-!  end subroutine vector_get_as_array
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_set(i_vector, n_size, n_blocks, x)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    integer, intent(in) :: n_size
-!    integer, intent(in) :: n_blocks 
-!    real(kind=8), dimension (n_blocks,n_size), intent(in) :: x 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... set a vector with n_size
-!    call ptr_vector % set(x)
-!    ! ...
-!    
-!  end subroutine vector_set
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_set_as_array(i_vector, n, x)
-!  implicit none
-!    integer, intent(in) :: i_vector
-!    integer, intent(in) :: n
-!    real(kind=8), dimension (n), intent(in) :: x 
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... set a vector with n_size
-!    call ptr_vector % set(x)
-!    ! ...
-!    
-!  end subroutine vector_set_as_array
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_read_from_file(i_vector, filename)
-!  implicit none
-!    integer,            intent(in) :: i_vector
-!    character(len=256), intent(in) :: filename
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... read_from_file object
-!    call ptr_vector % read_from_file(filename)
-!    ! ...
-!    
-!  end subroutine vector_read_from_file
-!  ! ................................................
-!
-!  ! ................................................
-!  subroutine vector_export(i_vector, filename, i_format)
-!  implicit none
-!    integer,            intent(in) :: i_vector
-!    character(len=256), intent(in) :: filename
-!    integer,            intent(in) :: i_format
-!    ! local
-!    class(plf_t_vector), pointer :: ptr_vector => null()
-!
-!    ! ...
-!    ptr_vector => p_vectors(i_vector) 
-!    ! ...
-!
-!    ! ... export object
-!    call ptr_vector % export(filename, i_format=i_format)
-!    ! ...
-!    
-!  end subroutine vector_export
-!  ! ................................................
+  ! ................................................
+  subroutine density_4d_create(i_density, starts, ends)
+  implicit none
+    integer,                 intent(in) :: i_density
+    integer, dimension(1:4), intent(in) :: starts 
+    integer, dimension(1:4), intent(in) :: ends 
+    ! local
+    type(t_density_4d), pointer :: ptr_density => null()
+
+    ! ...
+    ptr_density => p_density_4d(i_density) 
+    ! ...
+
+    ! ...
+    allocate(ptr_density % values(starts(1):ends(1), &
+                                & starts(2):ends(2), & 
+                                & starts(3):ends(3), & 
+                                & starts(4):ends(4)))
+    ! ...
+    
+  end subroutine density_4d_create
+  ! ................................................
+
+  ! ................................................
+  subroutine density_4d_free(i_density)
+  implicit none
+    integer, intent(in) :: i_density
+    ! local
+    type(t_density_4d), pointer :: ptr_density => null()
+
+    ! ...
+    ptr_density => p_density_4d(i_density) 
+    ! ...
+
+    ! ... free object
+    deallocate(ptr_density % values)
+    ! ...
+    
+  end subroutine density_4d_free
+  ! ................................................
+
+  ! ................................................
+  subroutine density_4d_print_info(i_density)
+  implicit none
+    integer, intent(in) :: i_density
+    ! local
+    type(t_density_4d), pointer :: ptr_density => null()
+
+    ! ...
+    ptr_density => p_density_4d(i_density) 
+    ! ...
+
+    print *, 'Add your text here'
+    
+  end subroutine density_4d_print_info
+  ! ................................................
 
 end module m_interface

@@ -1,6 +1,0 @@
-# coding: utf-8
-
-# ...
-class class_b(object):
-    pass
-# ...
