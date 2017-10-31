@@ -3,22 +3,27 @@ module m_interface
 implicit none
 
   private
-  public :: get_n_max_core_array, &
-          & density_4d_create,    &  
-          & density_4d_free,      & 
-          & density_4d_print_info 
+  public :: get_n_max_core_array,  &
+          & density_4d_create,     &  
+          & density_4d_free,       & 
+          & density_4d_print_info, & 
+          & density_5d_create,     &  
+          & density_5d_free,       & 
+          & density_5d_print_info 
 
   ! ... maximum size of arrays for local data to the module
   integer, parameter, private :: n_max_core_array =   50 
   ! ...
 
-  ! ... data structures for density
+  ! ... data structures for 4d density
   type, private :: t_density_4d
     integer, dimension(1:4) :: starts
     integer, dimension(1:4) :: ends
     real(kind=8), dimension(:,:,:,:), allocatable :: values
   end type t_density_4d
+  ! ...
 
+  ! ... data structures for 5d density
   type, private :: t_density_5d
     integer, dimension(1:5) :: starts
     integer, dimension(1:5) :: ends
@@ -102,6 +107,64 @@ contains
     print *, 'Add your text here'
     
   end subroutine density_4d_print_info
+  ! ................................................
+
+  ! ................................................
+  subroutine density_5d_create(i_density, starts, ends)
+  implicit none
+    integer,                 intent(in) :: i_density
+    integer, dimension(1:5), intent(in) :: starts 
+    integer, dimension(1:5), intent(in) :: ends 
+    ! local
+    type(t_density_5d), pointer :: ptr_density => null()
+
+    ! ...
+    ptr_density => p_density_5d(i_density) 
+    ! ...
+
+    ! ...
+    allocate(ptr_density % values(starts(1):ends(1), &
+                                & starts(2):ends(2), & 
+                                & starts(3):ends(3), & 
+                                & starts(4):ends(4), & 
+                                & starts(5):ends(5)))
+    ! ...
+    
+  end subroutine density_5d_create
+  ! ................................................
+
+  ! ................................................
+  subroutine density_5d_free(i_density)
+  implicit none
+    integer, intent(in) :: i_density
+    ! local
+    type(t_density_5d), pointer :: ptr_density => null()
+
+    ! ...
+    ptr_density => p_density_5d(i_density) 
+    ! ...
+
+    ! ... free object
+    deallocate(ptr_density % values)
+    ! ...
+    
+  end subroutine density_5d_free
+  ! ................................................
+
+  ! ................................................
+  subroutine density_5d_print_info(i_density)
+  implicit none
+    integer, intent(in) :: i_density
+    ! local
+    type(t_density_5d), pointer :: ptr_density => null()
+
+    ! ...
+    ptr_density => p_density_5d(i_density) 
+    ! ...
+
+    print *, 'Add your text here'
+    
+  end subroutine density_5d_print_info
   ! ................................................
 
 end module m_interface

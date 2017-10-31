@@ -10,7 +10,7 @@ python module m_interface ! in
             end subroutine get_n_max_core_array
 
             ! .......................................................
-            !                      density
+            !                      density_4d
             ! .......................................................
             subroutine density_4d_create(i_density, starts, ends) ! in :m_interface:interface.F90: density_4d_create
                 integer(kind=4)               intent(in) :: i_density
@@ -25,6 +25,24 @@ python module m_interface ! in
             subroutine density_4d_print_info(i_density) ! in :m_interface:interface.F90: density_4d_print_info
                 integer(kind=4)              intent(in) :: i_density
             end subroutine density_4d_print_info 
+            ! .......................................................
+
+            ! .......................................................
+            !                      density_5d
+            ! .......................................................
+            subroutine density_5d_create(i_density, starts, ends) ! in :m_interface:interface.F90: density_5d_create
+                integer(kind=5)               intent(in) :: i_density
+                integer(kind=5) dimension(5), intent(in) :: starts
+                integer(kind=5) dimension(5), intent(in) :: ends
+            end subroutine density_5d_create 
+
+            subroutine density_5d_free(i_density) ! in :m_interface:interface.F90: density_5d_free
+                integer(kind=5)              intent(in) :: i_density
+            end subroutine density_5d_free 
+
+            subroutine density_5d_print_info(i_density) ! in :m_interface:interface.F90: density_5d_print_info
+                integer(kind=5)              intent(in) :: i_density
+            end subroutine density_5d_print_info 
             ! .......................................................
         end module m_interface
     end interface 
